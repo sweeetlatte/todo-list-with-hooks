@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchTodos, addTodo } from "../reducers/todo";
+import { fetchTodos, addTodo, checkTodo } from "../reducers/todo";
 
 export default function TodoApp() {
     const [text, setText] = useState("");
@@ -41,7 +41,21 @@ export default function TodoApp() {
             <ul>
                 {todos &&
                     todos.map((todo, index) => (
-                        <li key={todo.id}>{todo.title}</li>
+                        <li
+                            key={todo.id}
+                            onClick={() => {
+                                if (todo.completed === false)
+                                    dispatch(checkTodo(index));
+                            }}
+                            style={{
+                                textDecoration:
+                                    todo.completed === true
+                                        ? "line-through"
+                                        : "",
+                            }}
+                        >
+                            {todo.title}
+                        </li>
                     ))}
             </ul>
         </div>

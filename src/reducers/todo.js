@@ -6,6 +6,7 @@ const initialState = {
 
 const SET_TODOS = "SET_TODOS"
 const ADD_TODO = "ADD_TODO"
+const CHECK_TODO = "CHECK_TODO"
 
 export const setTodos = (items) => ({
     type: SET_TODOS,
@@ -22,6 +23,11 @@ export const fetchTodos = () => async (dispatch) => {
 export const addTodo = (item) => ({
     type: ADD_TODO,
     payload: item
+})
+
+export const checkTodo = (index) => ({
+    type: CHECK_TODO,
+    payload: index
 })
 
 const reducer = (state = initialState, action) => {
@@ -52,6 +58,12 @@ const reducer = (state = initialState, action) => {
                     completed: false
                 }]
             };
+        case CHECK_TODO:
+            state.items[action.payload].completed = true;
+            return {
+                ...state,
+                items: state.items.map(item => item)
+            }
         default:
             return state;
     }
