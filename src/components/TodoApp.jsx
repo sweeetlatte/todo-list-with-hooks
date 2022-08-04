@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from "react";
 import { useSelector, useDispatch } from "react-redux";
 
-import { fetchTodos } from "../reducers/todo";
+import { fetchTodos, addTodo } from "../reducers/todo";
 
 export default function TodoApp() {
     const [text, setText] = useState("");
@@ -10,9 +10,15 @@ export default function TodoApp() {
 
     const dispatch = useDispatch();
 
-    useEffect(() => {
-        dispatch(fetchTodos());
-    }, [dispatch]);
+    // useEffect(() => {
+    //     dispatch(fetchTodos());
+    // }, [dispatch]);
+
+    function clearStorage() {
+        localStorage.clear();
+        window.location.reload();
+        return;
+    }
 
     return (
         <div>
@@ -21,7 +27,17 @@ export default function TodoApp() {
                 value={text}
                 onChange={(e) => setText(e.target.value)}
             />
-            <button>Add</button>
+            <button
+                onClick={() => {
+                    if (text !== "") {
+                        dispatch(addTodo(text));
+                        setText("");
+                    }
+                }}
+            >
+                Add
+            </button>
+            <button onClick={clearStorage}>Logout</button>
             <ul>
                 {todos &&
                     todos.map((todo, index) => (
